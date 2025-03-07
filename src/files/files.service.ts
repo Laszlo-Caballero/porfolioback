@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CloudinaryResponse } from 'src/cloudinary/cloudinary-response';
 import { v2 as cloudinary, DeleteApiResponse } from 'cloudinary';
 import * as streamifier from 'streamifier';
@@ -38,11 +38,10 @@ export class FilesService {
         status: HttpStatus.OK,
       };
     } catch (error) {
-      throw {
-        message: 'Error uploading file',
-        error,
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-      };
+      throw new HttpException(
+        'Error uploading file',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -75,11 +74,10 @@ export class FilesService {
         status: HttpStatus.OK,
       };
     } catch (error) {
-      throw {
-        message: 'Error deleting file',
-        error,
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-      };
+      throw new HttpException(
+        'Error deleting file',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
