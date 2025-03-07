@@ -31,4 +31,10 @@ export class FilesController {
   async remove(@Param('id') id: string) {
     return this.filesService.remove(id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async findAll() {
+    return this.filesService.findAll();
+  }
 }

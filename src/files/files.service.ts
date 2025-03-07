@@ -10,6 +10,15 @@ import { Model } from 'mongoose';
 export class FilesService {
   constructor(@InjectModel(Image.name) private imageModel: Model<Image>) {}
 
+  async findAll() {
+    const images = await this.imageModel.find();
+    return {
+      message: 'Images fetched successfully',
+      body: images,
+      status: HttpStatus.OK,
+    };
+  }
+
   async create(file: Express.Multer.File) {
     try {
       const res = await new Promise<CloudinaryResponse>((res, reject) => {
