@@ -10,6 +10,7 @@ import {
   UploadedFile,
   HttpStatus,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -22,8 +23,11 @@ export class FilesController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  create(@UploadedFile() file: Express.Multer.File) {
-    return this.filesService.create(file);
+  create(
+    @UploadedFile() file: Express.Multer.File,
+    @Query('type') type: string,
+  ) {
+    return this.filesService.create(file, type);
   }
 
   @UseGuards(JwtAuthGuard)

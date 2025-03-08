@@ -19,7 +19,7 @@ export class FilesService {
     };
   }
 
-  async create(file: Express.Multer.File) {
+  async create(file: Express.Multer.File, type: string) {
     try {
       const res = await new Promise<CloudinaryResponse>((res, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
@@ -37,6 +37,7 @@ export class FilesService {
       const newImage = await this.imageModel.create({
         name: res.public_id,
         url: res.url,
+        type: type || 'image',
       });
 
       const savedImage = await newImage.save();
@@ -47,6 +48,7 @@ export class FilesService {
         status: HttpStatus.OK,
       };
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         'Error uploading file',
         HttpStatus.INTERNAL_SERVER_ERROR,
